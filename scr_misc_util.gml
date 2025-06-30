@@ -27,7 +27,7 @@ function print(_string) // or trace
 	show_debug_message(_output_message);
 }
 function instance_create(_x, _y, _obj)
-{ return instance_create_depth(_x, _y, depth, _obj); }
+{ return instance_create_depth(_x, _y, 0, _obj); }
 function instance_create_only(_x, _y, _obj)
 {
 	if (instance_exists(_obj))
