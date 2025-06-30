@@ -35,6 +35,27 @@ function instance_create_only(_x, _y, _obj)
 		
 	return instance_create(_x, _y, _obj);
 }
+function string_safe(_string)
+{
+	//dunno if i need this ngl
+	var _stringUnraw = string_replace_all(_string, "\\n", "\n");
+	_stringUnraw = string_replace_all(_stringUnraw, "\\r", "\r");
+	_stringUnraw = string_replace_all(_stringUnraw, "\\t", "\t");
+	
+	//fixes backslash in paths
+	var _stringNoBackSlash = string_replace_all(_stringUnraw, "\\", "/");
+	
+	return _stringNoBackSlash;
+}
+function string_save(_string, _fname)
+{
+	//finally wrote this 
+	var _stringByteLength = string_byte_length(_string);
+	var _stringBuffer = buffer_create(_stringByteLength, buffer_fixed, 1);
+	buffer_write(_stringBuffer, buffer_text, _string);
+	buffer_save(_stringBuffer, _fname);
+	buffer_delete(_stringBuffer);
+}
 function string_load(_fname)
 {
 	//i made a buffer version but then i wondered about this
@@ -56,7 +77,22 @@ function string_load(_fname)
 }
 function json_load(_fname)
 { return json_parse(string_load(_fname)); }
+function json_save(_json, _fname)
+{ string_save(json_stringify(_json), _fname); }	
+
+//idk how i should go about naming this
+function sprite_isfinished(_spriteIndex = sprite_index, _imageNumber = undefined)
+{
+	var _calcImageNumber = sprite_get_number(_spriteIndex);
+	if (_imageNumber != undefined)
+		_calcImageNumber = _imageNumber;
+		
+	return (floor(image_index) >= _calcImageNumber - 1);
+}
+
 //TODO: saving
+function array_isempty(_array) //array_empty sounds like it would just be array_clear ngl so i edited it
+{ return (array_length(_array) - 1) <= 0; }
 function array_exists(_array, _value)
 { return array_indexof(_array, _value) != -1; }
 function array_indexof(_array, _value)
@@ -71,6 +107,7 @@ function array_indexof(_array, _value)
 }
 function array_deletevalue(_array, _value)
 { array_delete(_array, array_indexof(_array, _value), 1); }
+
 function is_null(_value) //unsure if or how i could use instances because noone is literally just -4
 { return (is_nan(_value) || is_undefined(_value) || (is_ptr(_value) && (_value == pointer_invalid || _value == pointer_null))); }
 function window_exists() //originally for printing because it annoys me that debug info can show before the game starts in the output and i had a queue to print shit and only started once the window existed
@@ -97,9 +134,13 @@ function string_numeric(_string)
 }
 //debated to fix string_pos because its one of the only functions with substr at the beginning and i Hate it
 
+//added delta time because its in nanoseconds????
+//the documentation's page on it even uses the divison
+//why not just set it to ms in the first place like current_time??????????
 #macro GM_build_snapshot __gm_snapshot_date()
 #macro YYC code_is_compiled()
 #macro DEBUG (GM_build_type == "run")
 #macro STRING_UNDEFINED (string(undefined))
+#macro DELTA_TIME (delta_time / 1000000)
 
 #macro trace print
