@@ -70,3 +70,7 @@ function average(_values_or_array)
 	
 	return _values;
 }
+function len(_x, _y)
+{ return sqrt(_x * _x + _y * _y); }
+function sqrlen(_x, _y)
+{ return _x * _x + _y * _y; }
