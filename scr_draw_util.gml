@@ -8,12 +8,17 @@ function draw_rectangle_outline(x1, y1, x2, y2, width)
 	//this sucks and could be made way better
 	//has seams on the corners or whatever because it uses Lines.
 	
-	//use same shit as draw_text_outline??
-	draw_line_width(x1, y1, x2, y1, width);
-	draw_line_width(x1, y1, x1, y2, width);
+	//i think i fixed it?
+	//seems to rely on the window and display and shit idk
+	//looks fine when i used it but dunno tbh
 	
-	draw_line_width(x2, y1, x2, y2, width);
-	draw_line_width(x1, y2, x2, y2, width);
+	//use same shit as draw_text_outline??
+	var cap_fix = round(width / 2);
+	draw_line_width(x1 - cap_fix, y1, x2 + cap_fix, y1, width);
+	draw_line_width(x1, y1 - cap_fix, x1, y2 + cap_fix, width);
+	
+	draw_line_width(x1 - cap_fix, y2, x2 + cap_fix, y2, width);
+	draw_line_width(x2, y1 - cap_fix, x2, y2 + cap_fix, width);
 }
 function draw_reset()
 {
@@ -40,7 +45,5 @@ function draw_text_outline(x1, y1, str, outline_size = 1, outline_color = c_blac
 }
 
 function make_color_gray(_gray)
-{
-	return make_color_rgb(_gray, _gray, _gray);	
-}
+{ return make_color_rgb(_gray, _gray, _gray); }
 #macro make_color_grey make_color_gray
