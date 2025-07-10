@@ -107,6 +107,34 @@ function array_indexof(_array, _value)
 }
 function array_deletevalue(_array, _value)
 { array_delete(_array, array_indexof(_array, _value), 1); }
+function array_fromstring(_array, _string)
+{
+	var _result = [];
+	for (var i = 1; i <= string_length(_string); i++)
+		array_push(_result, string_char_at(_string, i));
+		
+	return _result;
+}
+function array_fromnumber(_array, _number)
+{
+	var _string = string(_number);	
+	
+	var _result = [];
+	for (var i = 1; i <= string_length(_string); i++)
+		array_push(_result, real(string_char_at(_string, i)));
+		
+	return _result;
+}
+function array_fill(_array, _value, _first = 0, _last = -1) //does this already exist in gamermaker? it should ngl
+{
+	if (_last == -1)
+		_last = array_length(_array);
+		
+	for (var i = _first; i < _last; i++)
+		_array[i] = _value;
+}
+function array_clear(_array, _value) //literally above but named differently what was i thinking
+{ array_fill(_array, _value); }
 
 function is_null(_value) //unsure if or how i could use instances because noone is literally just -4
 { return (is_nan(_value) || is_undefined(_value) || (is_ptr(_value) && (_value == pointer_invalid || _value == pointer_null))); }
