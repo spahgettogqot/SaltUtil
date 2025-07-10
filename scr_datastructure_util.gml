@@ -41,7 +41,7 @@ function array_indexof(_array, _value)
 }
 function array_deletevalue(_array, _value)
 { array_delete(_array, array_indexof(_array, _value), 1); }
-function array_fromstring(_array, _string)
+function array_fromstring(_string)
 {
 	var _result = [];
 	for (var i = 1; i <= string_length(_string); i++)
@@ -49,7 +49,7 @@ function array_fromstring(_array, _string)
 		
 	return _result;
 }
-function array_fromnumber(_array, _number)
+function array_fromnumber(_number)
 {
 	var _string = string(_number);	
 	
