@@ -23,18 +23,19 @@ function print(_string) // or trace
 	
 	for (var i = 0; i < argument_count; i++)
 		_output_message += string(argument[i]);
-		
+	
 	show_debug_message(_output_message);
 }
 function instance_create(_x, _y, _obj)
 { return instance_create_depth(_x, _y, 0, _obj); }
-function instance_create_only(_x, _y, _obj)
+function instance_create_once(_x, _y, _obj) //renamed idk why
 {
 	if (instance_exists(_obj))
 		return instance_find(_obj, 0);
 		
 	return instance_create(_x, _y, _obj);
 }
+
 function string_safe(_string)
 {
 	//dunno if i need this ngl
@@ -75,6 +76,17 @@ function string_load(_fname)
     file_text_close(_file);
     return _file_content;
 }
+function string_numeric(_string) //idk why this was below
+{
+	//tries to return a number instead of a string if it can
+	//this was the first thing that came to mind and it works ig
+	var _value = _string;
+	try {_value = real(_value);} catch (_e) {};
+	
+	return _value;
+}
+//debated to fix string_pos because its one of the only functions with substr at the beginning and i Hate it
+
 function json_load(_fname)
 { return json_parse(string_load(_fname)); }
 function json_save(_json, _fname)
@@ -91,53 +103,6 @@ function sprite_isfinished(_spriteIndex = sprite_index, _imageNumber = undefined
 }
 
 //TODO: saving
-function array_isempty(_array) //array_empty sounds like it would just be array_clear ngl so i edited it
-{ return (array_length(_array) - 1) <= 0; }
-function array_exists(_array, _value)
-{ return array_indexof(_array, _value) != -1; }
-function array_indexof(_array, _value)
-{
-	for (var i = 0; i < array_length(_array); i++)
-	{
-		if (_array[i] == _value)
-			return i;
-	}
-	
-	return -1;
-}
-function array_deletevalue(_array, _value)
-{ array_delete(_array, array_indexof(_array, _value), 1); }
-function array_fromstring(_array, _string)
-{
-	var _result = [];
-	for (var i = 1; i <= string_length(_string); i++)
-		array_push(_result, string_char_at(_string, i));
-		
-	return _result;
-}
-function array_fromnumber(_array, _number)
-{
-	var _string = string(_number);	
-	
-	var _result = [];
-	for (var i = 1; i <= string_length(_string); i++)
-		array_push(_result, real(string_char_at(_string, i)));
-		
-	return _result;
-}
-function array_fill(_array, _value, _first = 0, _last = -1) //does this already exist in gamermaker? it should ngl
-{
-	if (_last == -1)
-		_last = array_length(_array);
-		
-	for (var i = _first; i < _last; i++)
-		_array[i] = _value;
-}
-function array_clear(_array, _value) //literally above but named differently what was i thinking
-{ array_fill(_array, _value); }
-
-function is_null(_value) //unsure if or how i could use instances because noone is literally just -4
-{ return (is_nan(_value) || is_undefined(_value) || (is_ptr(_value) && (_value == pointer_invalid || _value == pointer_null))); }
 function window_exists() //originally for printing because it annoys me that debug info can show before the game starts in the output and i had a queue to print shit and only started once the window existed
 {
 	var _hwnd = window_handle();
@@ -151,16 +116,6 @@ function window_contains_mouse()
 	//ugly as fuck
 	return (point_in_rectangle(display_mouse_get_x(), display_mouse_get_y(), window_get_x(), window_get_y(), window_get_x() + window_get_width(), window_get_y() + window_get_height()));	
 }
-function string_numeric(_string)
-{
-	//tries to return a number instead of a string if it can
-	//this was the first thing that came to mind and it works ig
-	var _value = _string;
-	try {_value = real(_value);} catch (_e) {};
-	
-	return _value;
-}
-//debated to fix string_pos because its one of the only functions with substr at the beginning and i Hate it
 
 //added delta time because its in nanoseconds????
 //the documentation's page on it even uses the divison
